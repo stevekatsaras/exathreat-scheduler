@@ -1,0 +1,15 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Spring Boot-Application<exathreat-scheduler>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.exathreat.Application",
+			"projectName": "exathreat-scheduler",
+			"args": "--spring.profiles.active=local",
+			"vmArgs": "-Xverify:none"
+		}
+	]
+}

@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /scheduler
+    session:
+      cookie:
+        http-only: false
+      tracking-modes:
+      - cookie
+  forward-headers-strategy: framework
+spring:
+  application:
+    name: exathreat-scheduler
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5 # connections = ((core_count * 2) + effective_spindle_count); https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: administrator@exathreat.com
+    password: mcckgkhasetovdqi
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        transport:
+          protocol: smtp
+
+management:
+  health:
+    elasticsearch:
+      enabled: false
+
+# Below are custom application YML settings
+
+audit:
+  purge-older-days: 182 # purge audits older than 6 months
+  
+invoice:
+  due-days: 14 # due invoices have 14 days to pay

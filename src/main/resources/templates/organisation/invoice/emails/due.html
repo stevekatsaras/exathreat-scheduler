@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body style="background-color: white; margin: 0; max-height: 100%;">
+	<div style="background-color: white; margin: 0; padding-top: 20px; padding-bottom: 20px; width: 100%;">
+		<div style="background-color: white; margin: 0 auto; width: 90%;">
+			<img src="logo.png" th:src="'cid:' + ${logo}" width="200" style="width: 200px;" />
+		</div>
+		<div style="background-color: #efefef; margin-top: 20px; padding: 0; width: 100%;">
+			<div style="margin: 0 auto; padding-top: 20px; padding-bottom: 20px; width: 90%;">
+				<div>
+					<h2 th:text="'Hey ' + ${organisationUser.givenName} + '!'"></h2>
+				</div>
+				<div>
+					<p style="line-height: 1.5em;">
+						We're writing to inform you that your invoice for <span th:text="${organisationUser.organisation.orgName}"></span> has been processed and is now due.
+					</p>
+				</div>
+				<div>
+					<p style="line-height: 1.5em;">
+						To see details of the invoice, please see the information below.
+					</p>
+				</div>
+				<div>
+					<table style="background-color: white; line-height: 1.5em; padding: 15px;">
+						<tr>
+							<td style="font-weight: bold; width: 125px;">Organisation:</td>
+							<td>
+								<div th:text="${organisationUser.organisation.orgName}"></div>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold; width: 125px;">Invoice</td>
+							<td>
+								<div th:text="${organisationInvoice.invCode}"></div>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold; width: 125px;">Period:</td>
+							<td>
+								<span th:text="${@timestampSupport.format(organisationInvoice.periodFrom, systemUser.timezone, 'dd MMM yyyy')}"></span> - 
+								<span th:text="${@timestampSupport.format(organisationInvoice.periodTo, systemUser.timezone, 'dd MMM yyyy')}"></span>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold; width: 125px;">Ingest (GB):</td>
+							<td>
+								<div th:with="totalIngest=${(0.0 + organisationInvoice.dataIngestTotal) / 1073741824}">
+									<span th:text="${#numbers.formatDecimal(totalIngest, 1, 'COMMA', 2, 'POINT')} + 'GB'"></span>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold; width: 125px;">Amount:</td>
+							<td>
+								<div th:with="currency=${organisationInvoice.organisationSubscription.subscription.currency}" th:remove="tag">
+									<div th:with="totalAmt=${(0.0 + organisationInvoice.amountTotal) / currency.divisible}" th:remove="tag">
+										<div th:text="${currency.symbol} + ${#numbers.formatDecimal(totalAmt, 1, 'COMMA', 2, 'POINT')} + ' ' + ${currency.iso3}"></div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<p style="line-height: 1.5em;">
+						Cheers!<br/>
+						The Exathreat team.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
